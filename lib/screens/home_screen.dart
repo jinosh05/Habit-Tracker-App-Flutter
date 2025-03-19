@@ -31,11 +31,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     ThemeData themeData = Theme.of(context);
     return Scaffold(
-      backgroundColor: themeData.colorScheme.background,
+      backgroundColor: themeData.colorScheme.surface,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(40),
         child: AppBar(
-          backgroundColor: themeData.colorScheme.background,
+          backgroundColor: themeData.colorScheme.surface,
           elevation: 0,
           leading: IconButton(
             onPressed: () {},
@@ -180,7 +180,7 @@ class CalendarSelectedDay extends StatelessWidget {
       decoration: BoxDecoration(
         color: isSameDay(DateTime.now(), day)
             ? themeData.colorScheme.primary
-            : themeData.colorScheme.surfaceVariant,
+            : themeData.colorScheme.surfaceContainerHighest,
         borderRadius: const BorderRadius.only(
           bottomLeft: defaultBorderRadius,
           bottomRight: defaultBorderRadius,
@@ -240,7 +240,7 @@ class CalendarDow extends StatelessWidget {
       decoration: BoxDecoration(
         color: isSameDay(DateTime.now(), day)
             ? themeData.colorScheme.primary
-            : themeData.colorScheme.surfaceVariant,
+            : themeData.colorScheme.surfaceContainerHighest,
         borderRadius: const BorderRadius.only(
           topLeft: defaultBorderRadius,
           topRight: defaultBorderRadius,
@@ -648,7 +648,7 @@ class HabitItem extends StatelessWidget {
           },
           child: Container(
             decoration: BoxDecoration(
-              color: themeData.colorScheme.surfaceVariant,
+              color: themeData.colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(15),
             ),
             padding: const EdgeInsets.all(15),

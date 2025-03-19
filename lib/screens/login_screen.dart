@@ -24,7 +24,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData themeData = Theme.of(context);
     return Scaffold(
-      backgroundColor: themeData.colorScheme.background,
+      backgroundColor: themeData.colorScheme.surface,
       body: SafeArea(
         child: Center(
           child: MediaQuery.of(context).size.height > 500

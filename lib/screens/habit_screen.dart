@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habitmate/blocs/new_habit_cubit.dart';
 import 'package:habitmate/config/constraint.dart';
 import 'package:habitmate/models/new_habit_model.dart';
 import 'package:habitmate/repositories/icons_repository.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final GetIt getIt = GetIt.instance;
 final tr = getIt.get<AppLocalizations>();
@@ -29,14 +29,17 @@ class _HabitScreenState extends State<HabitScreen> {
       if (widget.id == null) {
         await context
             .read<NewHabitCubit>()
-            .addNewHabit(nameController.text, descriptionController.text,
-                context.read<NewHabitCubit>().state.iconCodePoint)
+            .addNewHabit(
+              nameController.text,
+              descriptionController.text,
+              context.read<NewHabitCubit>().state.iconCodePoint,
+            )
             .then((value) {
-          while (context.canPop()) {
-            context.pop();
-          }
-          context.pushReplacement('/home');
-        });
+              while (context.canPop()) {
+                context.pop();
+              }
+              context.pushReplacement('/home');
+            });
       } else {
         await context
             .read<NewHabitCubit>()
@@ -47,11 +50,11 @@ class _HabitScreenState extends State<HabitScreen> {
               context.read<NewHabitCubit>().state.iconCodePoint,
             )
             .then((value) {
-          while (context.canPop()) {
-            context.pop();
-          }
-          context.pushReplacement('/home');
-        });
+              while (context.canPop()) {
+                context.pop();
+              }
+              context.pushReplacement('/home');
+            });
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -80,16 +83,16 @@ class _HabitScreenState extends State<HabitScreen> {
             context.read<NewHabitCubit>().state.description;
       });
     }
-    getIt.registerSingleton<Function>(onSaveHabitPressed,
-        instanceName: 'onSaveHabitPressed');
+    getIt.registerSingleton<Function>(
+      onSaveHabitPressed,
+      instanceName: 'onSaveHabitPressed',
+    );
     super.initState();
   }
 
   @override
   void dispose() {
-    getIt.unregister<Function>(
-      instanceName: 'onSaveHabitPressed',
-    );
+    getIt.unregister<Function>(instanceName: 'onSaveHabitPressed');
     super.dispose();
   }
 
@@ -97,9 +100,9 @@ class _HabitScreenState extends State<HabitScreen> {
   Widget build(BuildContext context) {
     ThemeData themeData = Theme.of(context);
     return Scaffold(
-      backgroundColor: themeData.colorScheme.background,
+      backgroundColor: themeData.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: themeData.colorScheme.background,
+        backgroundColor: themeData.colorScheme.surface,
         elevation: 0,
         title: Text(
           widget.id == null ? tr.new_habit : tr.edit_habit,
@@ -123,7 +126,7 @@ class _HabitScreenState extends State<HabitScreen> {
               ),
               const HabitIconPicker(),
               const SaveHabitButton(),
-              RemoveButton(id: widget.id)
+              RemoveButton(id: widget.id),
             ],
           ),
         ),
@@ -136,11 +139,12 @@ class HabitTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final bool last;
-  const HabitTextField(
-      {super.key,
-      required this.controller,
-      required this.hintText,
-      this.last = false});
+  const HabitTextField({
+    super.key,
+    required this.controller,
+    required this.hintText,
+    this.last = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -152,14 +156,9 @@ class HabitTextField extends StatelessWidget {
         children: [
           Text(
             hintText,
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-            ),
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
           ),
-          const SizedBox(
-            height: 5,
-          ),
+          const SizedBox(height: 5),
           TextFormField(
             controller: controller,
             textCapitalization: TextCapitalization.sentences,
@@ -167,26 +166,23 @@ class HabitTextField extends StatelessWidget {
               FocusScope.of(context).unfocus();
             },
             textInputAction: last ? TextInputAction.done : TextInputAction.next,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-            ),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
             cursorColor: themeData.colorScheme.primary,
             cursorWidth: 3,
             decoration: InputDecoration(
               isDense: true,
               contentPadding: const EdgeInsets.all(10),
-              fillColor: themeData.colorScheme.surfaceVariant,
+              fillColor: themeData.colorScheme.surfaceContainerHighest,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
-                  color: themeData.colorScheme.surfaceVariant,
+                  color: themeData.colorScheme.surfaceContainerHighest,
                 ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
-                  color: themeData.colorScheme.surfaceVariant,
+                  color: themeData.colorScheme.surfaceContainerHighest,
                 ),
               ),
             ),
@@ -200,8 +196,11 @@ class HabitTextField extends StatelessWidget {
 class HabitIconItem extends StatelessWidget {
   final int index;
   final int iconCodePoint;
-  const HabitIconItem(
-      {super.key, required this.index, required this.iconCodePoint});
+  const HabitIconItem({
+    super.key,
+    required this.index,
+    required this.iconCodePoint,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -209,22 +208,25 @@ class HabitIconItem extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         context.read<NewHabitCubit>().setNewHabitIconCodePoint(
-            IconsRepository().getFeaturedIcons()[index]);
+          IconsRepository().getFeaturedIcons()[index],
+        );
       },
       child: Container(
         decoration: BoxDecoration(
-          color: iconCodePoint == IconsRepository().getFeaturedIcons()[index]
-              ? themeData.colorScheme.primary
-              : themeData.colorScheme.surfaceVariant,
+          color:
+              iconCodePoint == IconsRepository().getFeaturedIcons()[index]
+                  ? themeData.colorScheme.primary
+                  : themeData.colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Icon(
           IconsRepository().getIconData(
             IconsRepository().getFeaturedIcons()[index],
           ),
-          color: iconCodePoint == IconsRepository().getFeaturedIcons()[index]
-              ? themeData.colorScheme.onPrimary
-              : themeData.colorScheme.onSurface,
+          color:
+              iconCodePoint == IconsRepository().getFeaturedIcons()[index]
+                  ? themeData.colorScheme.onPrimary
+                  : themeData.colorScheme.onSurface,
         ),
       ),
     );
@@ -241,14 +243,9 @@ class HabitIconPicker extends StatelessWidget {
       children: [
         Text(
           tr.icon,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
-          ),
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
         ),
-        const SizedBox(
-          height: 5,
-        ),
+        const SizedBox(height: 5),
         GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -291,9 +288,7 @@ class SaveHabitButton extends StatelessWidget {
       padding: defaultTopPadding,
       child: ElevatedButton(
         onPressed: () {
-          getIt.get<Function>(
-            instanceName: 'onSaveHabitPressed',
-          )(themeData);
+          getIt.get<Function>(instanceName: 'onSaveHabitPressed')(themeData);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: themeData.colorScheme.primary,
@@ -324,83 +319,77 @@ class RemoveButton extends StatelessWidget {
     ThemeData themeData = Theme.of(context);
     return Column(
       children: [
-        id == null
-            ? const SizedBox()
-            : const SizedBox(
-                height: 10,
-              ),
+        id == null ? const SizedBox() : const SizedBox(height: 10),
         id == null
             ? const SizedBox()
             : GestureDetector(
-                onTap: () async {
-                  // show dialog
-                  showDialog(
-                    context: context,
-                    builder: (contextDialog) {
-                      return AlertDialog(
-                        backgroundColor: themeData.colorScheme.surface,
-                        title: Text(
-                          tr.remove_habit_confirmation,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: themeData.colorScheme.onSurface,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'Inter',
+              onTap: () async {
+                // show dialog
+                showDialog(
+                  context: context,
+                  builder: (contextDialog) {
+                    return AlertDialog(
+                      backgroundColor: themeData.colorScheme.surface,
+                      title: Text(
+                        tr.remove_habit_confirmation,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: themeData.colorScheme.onSurface,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'Inter',
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(contextDialog);
+                          },
+                          child: Text(
+                            tr.cancel,
+                            style: TextStyle(
+                              color: themeData.colorScheme.onSurface,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(contextDialog);
-                            },
-                            child: Text(
-                              tr.cancel,
-                              style: TextStyle(
-                                color: themeData.colorScheme.onSurface,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                              ),
+                        TextButton(
+                          onPressed: () async {
+                            await context
+                                .read<NewHabitCubit>()
+                                .deleteHabit(id!)
+                                .then((value) {
+                                  Navigator.pop(contextDialog);
+                                  while (context.canPop()) {
+                                    context.pop();
+                                  }
+                                  context.pushReplacement('/home');
+                                });
+                          },
+                          child: Text(
+                            tr.remove,
+                            style: TextStyle(
+                              color: themeData.colorScheme.primary,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
-                          TextButton(
-                            onPressed: () async {
-                              await context
-                                  .read<NewHabitCubit>()
-                                  .deleteHabit(
-                                    id!,
-                                  )
-                                  .then((value) {
-                                Navigator.pop(contextDialog);
-                                while (context.canPop()) {
-                                  context.pop();
-                                }
-                                context.pushReplacement('/home');
-                              });
-                            },
-                            child: Text(
-                              tr.remove,
-                              style: TextStyle(
-                                color: themeData.colorScheme.primary,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-                child: Text(
-                  tr.remove_habit,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                  ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Text(
+                tr.remove_habit,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
+            ),
       ],
     );
   }

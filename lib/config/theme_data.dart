@@ -17,7 +17,7 @@ ThemeData lightModeTheme = FlexThemeData.light(
   subThemesData: const FlexSubThemesData(
     blendOnLevel: 10,
     blendOnColors: false,
-    useTextTheme: true,
+    useMaterial3Typography: true,
     useM2StyleDividerInM3: true,
     textButtonRadius: 10.0,
     filledButtonRadius: 10.0,
@@ -70,7 +70,7 @@ ThemeData darkModeTheme = FlexThemeData.dark(
   blendLevel: 13,
   subThemesData: const FlexSubThemesData(
     blendOnLevel: 20,
-    useTextTheme: true,
+    useMaterial3Typography: true,
     useM2StyleDividerInM3: true,
     textButtonRadius: 10.0,
     filledButtonRadius: 10.0,
